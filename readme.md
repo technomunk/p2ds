@@ -23,3 +23,9 @@ Or, if you want to run it in the browser run
 cargo install wasm-server-runner
 cargo run --target wasm32-unknown-unknown
 ```
+
+## 🕸 Building for web
+
+- Install [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/).
+- Run `wasm-pack build --target web`.
+- Add built artifacts to your website.
