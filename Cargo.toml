@@ -8,8 +8,9 @@ edition = "2021"
 wasm-bindgen = "0.2"
 
 [lib]
-name = "p2ds_lib"
+name = "p2dslib"
 crate-type = ["cdylib", "rlib"]
+targets = ["wasm32-unknown-unknown"]
 
 [dependencies.bevy]
 version = "0.6"
