@@ -1,7 +1,6 @@
 //! Specialized systems for wasm builds.
 
-use bevy::{prelude::*, window::WindowResized};
-use wasm_bindgen::prelude::*;
+use bevy::prelude::*;
 
 /// Make sure the window occupies the whole browser window
 pub fn fullscreen_window(mut windows: ResMut<Windows>, mut last_size: Local<Vec2>) {
