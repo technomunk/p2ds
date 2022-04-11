@@ -8,6 +8,7 @@ edition = "2021"
 wasm-bindgen = "0.2"
 
 [lib]
+name = "p2ds_lib"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies.bevy]
@@ -15,12 +16,26 @@ version = "0.6"
 default-features = false
 features = [
 	# parts of bevy being used
-	"bevy_winit",  # windowing system
-	"bevy_render",  # core rendering
-	"bevy_core_pipeline",  # rendering pipeline
-	"bevy_sprite",  # 2D rendering
+	"bevy_winit",         # windowing system
+	"bevy_render",        # core rendering
+	"bevy_core_pipeline", # rendering pipeline
+	"bevy_sprite",        # 2D rendering
 ]
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+web-sys = { version = "0.3", features = ["Window"] }
 
 # Enable optimizations for dependencies (incl. Bevy), but not for library code:
 [profile.dev.package."*"]
 opt-level = 3
+
+# Because wasm-pack uses hard-coded release profile, optimize for size
+[profile.release]
+opt-level = "s"
+lto = true
+
+# Maximize performance for binary application builds
+[profile.release_bin]
+inherits = "release"
+opt-level = 3
+lto = true

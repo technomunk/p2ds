@@ -13,31 +13,38 @@ use bevy::{
 use wasm_bindgen::prelude::*;
 
 #[cfg(target_arch = "wasm32")]
-use bevy::window::WindowMode;
+mod wasm;
 
 #[derive(Default, Component)]
 struct ShapeShifter;
 
 #[wasm_bindgen]
 pub fn game() {
-    App::new()
-        .insert_resource(WindowDescriptor {
-            title: "p2ds".to_string(),
-            vsync: true,
-            #[cfg(target_arch = "wasm32")]
-            mode: WindowMode::BorderlessFullscreen,
-            ..Default::default()
-        })
-        .add_plugins(DefaultPlugins)
-        .insert_resource(ClearColor(Color::rgb(0.5, 0.5, 0.5)))
-        .add_startup_system(setup)
-        .add_system(bevy::input::system::exit_on_esc_system)
-        .add_system_set(
-            SystemSet::new()
-                .with_run_criteria(FixedTimestep::step(0.15))
-                .with_system(change_shape),
-        )
-        .run();
+    let mut app = App::new();
+
+    // default systems, relevant for all target builds
+    app.insert_resource(WindowDescriptor {
+        title: "p2ds".to_string(),
+        vsync: true,
+        ..Default::default()
+    })
+    .add_plugins(DefaultPlugins)
+    .insert_resource(ClearColor(Color::rgb(0.5, 0.5, 0.5)))
+    .add_startup_system(setup)
+    .add_system_set(
+        SystemSet::new()
+            .with_run_criteria(FixedTimestep::step(0.15))
+            .with_system(change_shape),
+    );
+
+    // target-specific systems
+    #[cfg(target_arch = "wasm32")]
+    app.add_system(wasm::fullscreen_window);
+    #[cfg(not(target_arch = "wasm32"))]
+    app.add_system(bevy::input::system::exit_on_esc_system);
+
+    // finally run the application
+    app.run();
 }
 
 /// Add game entities to the world
