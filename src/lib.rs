@@ -12,6 +12,9 @@ use bevy::{
 };
 use wasm_bindgen::prelude::*;
 
+#[cfg(target_arch = "wasm32")]
+use bevy::window::WindowMode;
+
 #[derive(Default, Component)]
 struct ShapeShifter;
 
@@ -21,6 +24,8 @@ pub fn game() {
         .insert_resource(WindowDescriptor {
             title: "p2ds".to_string(),
             vsync: true,
+            #[cfg(target_arch = "wasm32")]
+            mode: WindowMode::BorderlessFullscreen,
             ..Default::default()
         })
         .add_plugins(DefaultPlugins)
