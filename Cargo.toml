@@ -7,15 +7,18 @@ edition = "2021"
 license = "Apache-2.0 OR MIT"
 readme = "readme.md"
 
-[dependencies]
-wasm-bindgen = "0.2"
-
 [lib]
 name = "p2dslib"
 crate-type = ["cdylib", "rlib"]
 
+[dependencies]
+nalgebra = "*"
+rand = "0.8"
+wasm-bindgen = "0.2"
+
 [dependencies.bevy]
-version = "0.6"
+git = "https://github.com/bevyengine/bevy"
+rev = "8783fae7"
 default-features = false
 features = [
 	# parts of bevy being used
@@ -24,7 +27,7 @@ features = [
 	"bevy_core_pipeline", # rendering pipeline
 	"bevy_sprite",        # 2D rendering
 	# assets
-	"png"
+	"png",
 ]
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
